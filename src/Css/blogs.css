@@ -1,0 +1,105 @@
+.screen-slider {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center; /* Centers the slider horizontally */
+  align-items: center;
+}
+
+.product-blogs {
+  display: flex;
+  justify-content: center; /* Centers the individual cards */
+  padding: 0; /* Remove any padding */
+  margin: 0; /* Remove any margin */
+}
+
+/* Flexbox for slider items to eliminate space */
+.slick-slide {
+  display: flex !important;
+  justify-content: center; /* Ensures the cards are centered in the slide */
+  padding: 0; /* Remove padding to eliminate space between cards */
+  margin: 0; /* Remove margin to eliminate space between cards */
+}
+
+.card_slider_exp {
+  background-color: rgb(54, 52, 52);
+  height: 550px;
+  overflow: hidden;
+  transition: all 0.8s ease-out 0s;
+ 
+  margin: 3vh 1vh 5vh 3vh;
+}
+.we_help_you_home {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 400;
+  margin-bottom: 4vh;
+}
+.card_slider_exp:hover {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  border: none;
+  transform: scale(1.02);
+}
+
+.img_slider_experience {
+  width: 100%; /* Make the image fit the card width */
+  height: 250px;
+  object-fit: cover;
+}
+
+.text_slider_exp {
+  font-weight: 400;
+  line-height: 28px;
+  color: rgb(102, 102, 102);
+  font-size: 18px;
+}
+
+/* Optionally hide the arrows for smaller screens */
+@media (max-width: 480px) {
+  .slick-prev {
+    display: none;
+  }
+  .slick-next {
+    display: none;
+  }
+  .slider_img_home {
+    height: 200px;
+  }
+  .text_slider_exp {
+    font-size: 15px;
+  }
+  .card_slider_exp {
+    height: 450px;
+ max-width: 260px;
+  }
+  .title_slider_exp {
+    font-size: 20px;
+  }
+  .text_slider_exp {
+    font-size: 15px;
+  }
+}
+@media (max-width: 768px) {
+  .we_help_you_home {
+    font-size: 1.5rem;
+    line-height: 1.75rem;
+    font-weight: 400;
+  }
+}
+
+@media (max-width: 576px) {
+  .we_help_you_home {
+    font-size: 1.5rem;  /* Small phones */
+    line-height: 1.75rem;
+    font-weight: 400;
+  }
+}
+
+@media (max-width: 360px) {
+  .we_help_you_home {
+    font-size: 1rem;  /* Very small screens */
+    line-height: 1.75rem;
+    font-weight: 400;
+  }
+}

@@ -1,0 +1,63 @@
+.custom-modal .modal-dialog {
+    max-width: 100%; /* Set the width to 80% of the viewport width */
+  }
+  .Head-cart {
+    font-weight: normal; /* You can adjust this as needed */
+    color: rgb(168, 167, 167);
+  /* padding-left: 81px; */
+ 
+  font-size:14px ;
+}
+/* Refund.css */
+.policy-content {
+  line-height: 2.8;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .policy-content {
+      font-size: 0.9rem;
+      padding: 0 15px;
+  }
+
+  .policy-content h2 {
+      font-size: 1.8rem;
+  }
+
+  .policy-content h5 {
+      font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .policy-content h2 {
+      font-size: 1.6rem;
+  }
+
+  .policy-content h5 {
+      font-size: 1rem;
+  }
+
+  .policy-content {
+      font-size: 0.85rem;
+  }
+}
+
+.policy-content h2, h5 {
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+}
+
+.policy-content a {
+  text-decoration: underline;
+  color:rgb(105, 104, 104);
+  font-weight: bold;
+}
+
+  @media (min-width: 768px) {
+    .custom-modal .modal-dialog {
+      max-width: 60%; /* For larger screens, reduce width if needed */
+    }
+  }
+  
