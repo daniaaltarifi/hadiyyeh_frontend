@@ -20,18 +20,13 @@ import ProductDetails from "./Pages/ProductDetails";
 import SignIn from "./Pages/SignIn";
 import Register from "./Pages/Register";
 import MyAccount from "./Pages/MyAccount";
-import Search from "./components/Search";
 import Cardes from "./Pages/Cardes";
 import Allproducts from "./Pages/Allproducts";
 import CheakOut from "./components/CheakOut";
 import Gift from "./Pages/Gift";
-import GiftDetails from "./Pages/GiftDetails";
 import Refund from "./Pages/Refund";
 import Privacy from "./Pages/Privacy";
 import Terms from "./Pages/Terms";
-import AllBag from "./Pages/Bag/AllBag";
-import AllWatche from "./Pages/Watche/AllWatche";
-import AllFragrance from "./Pages/Fragrance/AllFragrance";
 import BrandsProduct from "./Pages/BrandsProducts";
 import { CartProvider } from "react-use-cart";
 import ForgetPassword from "./Pages/ForgetPassword";
@@ -95,7 +90,6 @@ const App = () => {
             <Route path="/:lang/cheakOut" element={<CheakOut />} />
             <Route path="/:lang" element={<Home />} />
             <Route path="/:lang/my-account" element={<MyAccount />} />
-            <Route path="/:lang/search" element={<Search />} />
             <Route path="/:lang/sign-in" element={<SignIn />} />
             <Route path="/:lang/register" element={<Register />} />
             <Route path="/:lang/forgetpassword" element={<ForgetPassword />} />
@@ -108,13 +102,10 @@ const App = () => {
               element={<ProductDetails />}
             />
             <Route path="/:lang/gift" element={<Gift />} />
-            <Route path="/:lang/giftDetails/:id" element={<GiftDetails />} />
             <Route path="/:lang/refund" element={<Refund />} />
             <Route path="/:lang/privacy" element={<Privacy />} />
             <Route path="/:lang/terms" element={<Terms />} />
-            <Route path="/:lang/allBag" element={<AllBag />} />
-            <Route path="/:lang/allWatche" element={<AllWatche />} />
-            <Route path="/:lang/allFragrance" element={<AllFragrance />} />
+      
           </Routes>
 
           {/* Conditionally render the footer if the path is NOT '/cart' */}

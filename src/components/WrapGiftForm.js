@@ -26,7 +26,6 @@ const WrapGiftForm = ({ show, handleClose, productID }) => {
           axios.get(`${API_URL}/wrapgift`),
         ]);
         setWrapGift(wrapResponse.data);
-        console.log("Wrap gift data:", wrapResponse.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -36,12 +35,6 @@ const WrapGiftForm = ({ show, handleClose, productID }) => {
   }, []);
 
   const handleClick = async () => {
-    console.log("Product ID:", productID);
-    console.log("User ID:", user.id);
-    console.log("Selected Wrap ID:", wrapId);
-    console.log("Message:", message);
-    console.log("Delivery Date:", deliveryDate);
-
     if (user && user.id) {
       const selectedWrap = wrapGift.find((wrap) => wrap.id === wrapId);
       const productData = {
