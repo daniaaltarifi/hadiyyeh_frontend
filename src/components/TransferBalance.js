@@ -1,20 +1,11 @@
 import React, { useState } from "react";
 import {
-  Container,
-  Row,
-  Col,
-  Tab,
-  Nav,
-  Image,
   Form,
   Button,
-  Spinner,
   InputGroup,
 } from "react-bootstrap";
 import { MdOutlineAlternateEmail } from "react-icons/md";
 import { FaBalanceScale } from "react-icons/fa";
-
-import { MdOutlineQrCode } from "react-icons/md";
 import Heading from "../components/Heading";
 import { useThemeHook } from "../GlobalComponents/ThemeProvider";
 import { useLocation } from "react-router-dom";

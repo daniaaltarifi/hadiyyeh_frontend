@@ -84,14 +84,13 @@ const AddToCartBtn = ({
         onClick={handleClick}
         className={`${
           theme ? "bg-dark-primary text-black" : "bg-light-primary text-light"
-        } py-2 m-1`}
-        style={{ border: 0 }}
+        } py-2 m-1 `}
+        style={{ borderRadius:"20px",width:"45%" }}
       >
-        <BsCartPlus size="1.8rem" />
+        <BsCartPlus size="1.8rem" style={{paddingRight:"5px"}}/>
         Add to cart
       </button>
       <RightCart
-        // productData={productData}
         isCanvasOpen={isCanvasOpen}
         toggleCanvas={toggleCanvas}
         cart={cart}

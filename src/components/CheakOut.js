@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Container, Row, Col, Form, Button, Spinner } from "react-bootstrap";
 import "../Css/cheakout.css";
 import FetchUserById from "./FetchUserById";
@@ -28,14 +28,6 @@ function CheakOut({ products = [] }) {
   const { formData, address, loading, handleChange, handleSubmit } = Address(
     storedUser?.id
   );
-  // const handleAddressChange = (address) => {
-  //   setBillingAddress(address);
-  //   // Show the billing form if a different address is selected
-  //   setShowBillingForm(address === "Outside Amman");
-  // };
-  // useEffect(() => {
-
-  // }, []);
   const handleShippingChange = (method, cost) => {
     setFinalTotalPrice((prevPrice) => prevPrice - previousShippingCost + cost);
     setPreviousShippingCost(cost); // Update the previous shipping cost

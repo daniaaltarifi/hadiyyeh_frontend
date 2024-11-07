@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, Container, Col, Row, Table } from "react-bootstrap";
 import { useCart } from "react-use-cart";
 import { useThemeHook } from "../GlobalComponents/ThemeProvider";
@@ -25,12 +25,8 @@ const Cart = () => {
   const { user, cart, setCart } = FetchCartData(); // Use the custom hook
 
   const {
-    // isEmpty,
-    items,
-    // cartTotal,
     updateItemQuantity,
     removeItem,
-    // emptyCart,
   } = useCart();
 
   // Function to open the modal
@@ -103,7 +99,7 @@ const Cart = () => {
 
   return (
     <Container className="py-4 margin_section full-screen-slider">
-      <h1 className={`${theme ? "text-light" : "text-light-primary"} my-3  `}>
+      <h1 className={`${theme ? "text-light" : "text-light-primary"} my-3 ms-2`}>
         {!cart ? "Your Cart is Empty" : "Your Cart"}
       </h1>
       <Row className="justify-content-center">
@@ -117,15 +113,15 @@ const Cart = () => {
         >
           <thead>
             <tr>
-              <th></th>
-              <th className="Head-cart">PRODUCT</th>
-              <th></th>
-              <th className="Head-cart"></th>
-              <th className="Head-cart">TOTAL</th>
+              <th>Image</th>
+              <th >PRODUCT</th>
+              <th>Quantity</th>
+              <th >Action</th>
+              <th>TOTAL</th>
             </tr>
           </thead>
           <tbody>
-            {cart.map((item, index) => {
+            {cart.map((item) => {
               const totalPriceforSpecificProduct = item.price * item.quantity; // Calculate total price for the item
               return (
                 <tr key={item.id}>

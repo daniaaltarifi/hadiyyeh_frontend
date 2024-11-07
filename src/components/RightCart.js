@@ -1,25 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
 import "../Css/rightCart.css";
-import { Image, Modal, Button } from "react-bootstrap"; // Import Modal and Button
-import slider1 from "../images/Girl-removebg-preview.png";
+import { Image } from "react-bootstrap"; // Import Modal and Button
+// import slider1 from "../images/Girl-removebg-preview.png";
 import { useThemeHook } from "../GlobalComponents/ThemeProvider";
-import { IoMdAdd } from "react-icons/io";
-import { FiMinus } from "react-icons/fi";
-import { FaRegTrashCan } from "react-icons/fa6";
-import { TiArrowSortedDown } from "react-icons/ti";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+// import { IoMdAdd } from "react-icons/io";
+// import { FiMinus } from "react-icons/fi";
+// import { FaRegTrashCan } from "react-icons/fa6";
+// import { TiArrowSortedDown } from "react-icons/ti";
+// import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "react-use-cart";
-import FetchCartData from "./FetchCardData";
+// import FetchCartData from "./FetchCardData";
 
 const RightCart = ({ isCanvasOpen, toggleCanvas, cart, user }) => {
   const API_URL = process.env.REACT_APP_API_URL;
-  const { items, cartTotal } = useCart();
+  const { items } = useCart();
   // const isEmpty = items.length === 0;
   const [theme] = useThemeHook();
-  const [showGiftModal, setShowGiftModal] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const lang = location.pathname.split("/")[1] || "en";
+  // const [showGiftModal, setShowGiftModal] = useState(false);
+  // const navigate = useNavigate();
+  // const location = useLocation();
+  // const lang = location.pathname.split("/")[1] || "en";
   //     const { user, cart, loading, error } = FetchCartData(); // Use the custom hook
   const isUserLoggedin = Boolean(user);
   const displayitems = isUserLoggedin ? cart : items;
@@ -33,32 +33,29 @@ const RightCart = ({ isCanvasOpen, toggleCanvas, cart, user }) => {
 
   const totalPrice = calculateTotalPrice();
 
-  const [specialInstructionsVisible, setSpecialInstructionsVisible] =
-    useState(false);
+  // const [specialInstructionsVisible, setSpecialInstructionsVisible] =
+  //   useState(false);
 
-  const handleToggleInstructions = () => {
-    setSpecialInstructionsVisible((prevState) => !prevState);
-  };
+  // const handleToggleInstructions = () => {
+  //   setSpecialInstructionsVisible((prevState) => !prevState);
+  // };
 
-  const handleCheckout = () => {
-    handleClose();
+  // const handleCheckout = () => {
+  //   handleClose();
 
-    navigate(`/${lang}/cheakOut`);
-  };
+  //   navigate(`/${lang}/cheakOut`);
+  // };
 
   // Function to open the modal
-  const handleGiftClick = () => {
-    setShowGiftModal(true);
-  };
+  // const handleGiftClick = () => {
+  //   setShowGiftModal(true);
+  // };
 
-  // Function to close the modal
-  const handleClose = () => {
-    setShowGiftModal(false);
-  };
-  const handleQuantityChange = (itemId, action) => {
-    // Logic to update quantity based on the action (increase or decrease)
-    // This might involve updating state or dispatching an action if using Redux
-  };
+  // // Function to close the modal
+  // const handleClose = () => {
+  //   setShowGiftModal(false);
+  // };
+
 
   return (
     <div

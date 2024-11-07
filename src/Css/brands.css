@@ -1,6 +1,6 @@
 /* Ensure all images have the same dimensions */
 .brand-image-container {
-  margin-bottom: 10px;
+  margin-bottom: 50px;
 }
 
 .container-Brands {
@@ -14,10 +14,10 @@
   transform: scale(1.05);
 }
 .brand-image {
-  width: 100%; /* Full width for responsiveness */
+  width: 200px; /* Full width for responsiveness */
   max-width: 300px; /* Limit max width */
-  height: 300px; /* Fixed height for all images */
-  object-fit: contain; /* Maintain aspect ratio while filling the container */
+  height: 200px; /* Fixed height for all images */
+  object-fit: cover; /* Maintain aspect ratio while filling the container */
   margin: 0 auto ; /* Center the image */
 
 }
@@ -32,13 +32,13 @@
 a:hover {
   text-decoration: underline;
 }
-.Title-Brands {
+/* .Title-Brands {
   font-size: 2.25rem;
   line-height: 2.5rem;
   font-weight: 400;
   text-align: center;
  
-}
+} */
 
 
 /* Adjustments for smaller screens */
@@ -56,19 +56,13 @@ a:hover {
   }
 }
 
-.link-Brands {
-  display: block;
-  color: #888;
-  text-decoration: none;
-  font-weight: bold;
-}
 
 a:hover {
   text-decoration: underline;
 }
 
 .Title-Brands {
-  font-size: 2.25rem;
+  font-size: 2.5rem;
   line-height: 2.5rem;
   font-weight: 400;
   text-align: center;
@@ -108,8 +102,9 @@ a:hover {
 
 @media (max-width: 576px) {
   .container-Brands h3 {
-    font-size: 1.25rem;  /* Small phones */
+    font-size:25px;  /* Small phones */
     line-height: 1.5rem;
+    font-weight: bold;
   }
 }
 

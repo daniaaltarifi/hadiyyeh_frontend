@@ -3,6 +3,7 @@ import { useThemeHook } from '../GlobalComponents/ThemeProvider';
 
 function Refund() {
     const [theme] = useThemeHook();
+    window.scrollTo(0, 0);
 
     return (
         <section 
@@ -15,7 +16,7 @@ function Refund() {
         >
             <div className="container py-5">
                 <h2 className="mb-4 text-center">Refund Policy</h2>
-                <div className="policy-content">
+                <div className=" ms-3">
                     <p >
                         At Hadiyyeh, we strive to provide the best customer experience possible. If for any reason you are not completely satisfied with your purchase, we offer a hassle-free return policy to ensure your peace of mind. 
                         You have 7 days from the date of receiving your item to request a return. During this period, you can evaluate your purchase and decide if it meets your expectations. To be eligible for a return, your item must be in the same condition as when you received it. It should be unworn, unused, and in its original packaging. Please ensure that all tags are still attached. Additionally, you will need to provide the receipt or proof of purchase.

@@ -10,6 +10,7 @@ const BrandsData = () => {
   useEffect(() => {
     const fetchBrands = async () => {
       try {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         const response = await axios(`${API_URL}/product/get/brands`);
         setBrands(response.data);
       } catch (error) {

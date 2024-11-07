@@ -5,7 +5,6 @@ import {
   Col,
   Button,
   Form,
-  Spinner,
   InputGroup,
 } from "react-bootstrap";
 import { useThemeHook } from "../GlobalComponents/ThemeProvider";
@@ -59,10 +58,10 @@ const SignIn = () => {
   };
 
   return (
-    <Container className="py-5">
+    <Container className="py-5 overflow-hidden "style={{width:"100%"}}>
       <Row className="justify-content-center mt-5">
         <Col
-          xs={11}
+          xs={12}
           sm={10}
           md={8}
           lg={4}
@@ -97,7 +96,6 @@ const SignIn = () => {
                 name="password"
                 type="password"
                 placeholder={lang === "ar" ? "كلمة السر" : "Password"}
-                minLength={6}
                 required
               />{" "}
             </InputGroup>

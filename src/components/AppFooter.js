@@ -1,12 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Container, Row, Col , Form} from 'react-bootstrap';
+import { Container, Row, Col , Form,Image} from 'react-bootstrap';
 import { FaFacebook } from 'react-icons/fa';
 import { RiTiktokFill } from 'react-icons/ri';
 import { BsInstagram } from "react-icons/bs";
-import { IoIosArrowRoundForward } from "react-icons/io";
 import { ThemeContext } from '../GlobalComponents/ThemeProvider';
 import '../Css/appFooter.css'
-import { useNavigate ,useLocation} from 'react-router-dom';
+import { useNavigate ,useLocation, Link} from 'react-router-dom';
 function AppFooter() {
   const { theme, setThemeMode } = useContext(ThemeContext); 
   const navigate = useNavigate();
@@ -38,34 +37,37 @@ function AppFooter() {
             <Container className=" p-3">
           
             <Row className="d-flex justify-content-between ">
-    <Col lg={8} className="">
-        <h6 className="text-uppercase">
+    <Col lg={3} className="d-flex justify-content-evenly">
+        {/* <h6 className="text-uppercase">
 
         {lang === "ar" ? "انضم إلى عائلتنا  " : "JOIN OUR FAMILY"}
         </h6>
         <Form.Group className="mb-3 position-relative w-50">
-            {/* <IoIosArrowRoundForward 
-                size="1.5rem" 
-                className="position-absolute" 
-                style={{ right: '10px', top: '50%', transform: 'translateY(-50%)', color: '#6c757d' }} 
-            /> */}
             <Form.Control 
                 name="email" 
                 type="email" 
                 placeholder={lang === 'ar' ? "الايميل": "Email"} 
                 required 
             />
-        </Form.Group>
+        </Form.Group> */}
+          <Image
+                src={require('../images/Logo.avif')}
+                style={{ maxHeight: "70px", margin: "10px",width:"70px",height:"70px" }}
+                thumbnail
+                fluid
+                roundedCircle
+                className="p-0 "
+              />
     </Col>
 
-    <Col lg={4} className="">
+    <Col lg={9} className="text-center">
         {/* Social media icons */}
         <FaFacebook size="1.1rem" className="ms-3" />
         <RiTiktokFill size="1.1rem" className="ms-3" />
         <BsInstagram size="1.1rem" className="ms-3" />
         
        {/* Contact Information */}
-<div className="mt-3">
+<div className="mt-3 ">
     <p className="mb-1">
        <a href="mailto:Info@hadiyyeh.com" className="link-Footer">Info@hadiyyeh.com</a>
     </p>
@@ -119,22 +121,22 @@ function AppFooter() {
         </a>
       </li>
       <li className="ms-3 mb-2 mb-lg-0">
-        <a href={`/${lang}/refund`} className={theme ? 'linkbottom-Footer' : 'text-black linkbottom-Footer'}>
+        <Link to={`/${lang}/refund`} className={theme ? 'linkbottom-Footer' : 'text-black linkbottom-Footer'}>
          
            {lang === "ar" ? " سياسة الاسترجاع " : " Refund policy"}
-        </a>
+        </Link>
       </li>
       <li className="ms-3 mb-2 mb-lg-0">
-        <a href={`/${lang}/privacy`} className={theme ? 'linkbottom-Footer' : 'text-black linkbottom-Footer'}>
+        <Link to={`/${lang}/privacy`} className={theme ? 'linkbottom-Footer' : 'text-black linkbottom-Footer'}>
           
           {lang === "ar" ? " سياسة الخصوصية " : "Privacy policy"}
-        </a>
+        </Link>
       </li>
       <li className="ms-3 mb-2 mb-lg-0">
-        <a href={`/${lang}/terms`} className={theme ? 'linkbottom-Footer' : 'text-black linkbottom-Footer'}>
+        <Link to={`/${lang}/terms`} className={theme ? 'linkbottom-Footer' : 'text-black linkbottom-Footer'}>
         
           {lang === "ar" ? "شروط الخدمة" : "  Terms of service"}
-        </a>
+        </Link>
       </li>
     </ul>
   </Col>

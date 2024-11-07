@@ -1,20 +1,20 @@
-.bady{
+/* .bady{
   background-color: white;
       
-}
+} */
 
 
 
 .responsive-carousel {
     max-width: 100%;
-    height: auto;
-    
+    height:80vh; /* Set a specific height */
 }
+
 
 .carousel-image {
     width: 100%; /* Ensure the image takes the full width */
-    height: auto; /* Adjust height to maintain aspect ratio */
-    max-height: 500px; /* You can adjust this as needed */
+    height: 80vh; /* Adjust height to maintain aspect ratio */
+    max-height: 80vh; /* You can adjust this as needed */
 }
 
 
@@ -81,8 +81,11 @@
 }
 
 @media (max-width: 768px) {
+    .responsive-carousel {
+        height: 300px;
+    }
     .carousel-image {
-        max-height: 300px; /* Smaller max height for mobile devices */
+        max-height: 300px; 
     }
     .carousel-caption {
         padding: 15px;

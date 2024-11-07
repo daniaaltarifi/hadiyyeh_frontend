@@ -13,6 +13,7 @@ const settings = {
   slidesToScroll: 1,
   autoplay: true,
   autoplaySpeed: 2000,
+  infinite: false,
   dots: true, // Remove dots
   centerMode: false, // Disable center mode to avoid spacing issues
   responsive: [
@@ -28,15 +29,15 @@ const settings = {
       settings: {
         slidesToShow: 3,
         slidesToScroll: 2,
-        infinite: true,
+        // infinite: true,
       },
     },
     {
       breakpoint: 768,
       settings: {
-        slidesToShow: 2,
+        slidesToShow: 1,
         slidesToScroll: 1,
-        infinite: true,
+        // infinite: true,
         autoplay: true,
         autoplaySpeed: 2000,
       },
@@ -62,7 +63,7 @@ const Cardes = () => {
           ? "bg-light-black text-light margin_section full-screen-slider"
           : "bg-light text-black margin_section full-screen-slider"
       }
-      data-aos="fade-up"
+      // data-aos="fade-up"
     >
       <div className="container-fluid text-center">
         <h3
@@ -95,7 +96,8 @@ const Cardes = () => {
                     <Image
                       src={`${API_URL}/${product.first_image}`}
                       className="slider_img_home Card-image"
-                      alt="First slide"
+                      alt="Latest Product"
+                      loading="lazy"
                     />
                     {/* Button placed on top of the image, aligned left */}
                     {product.sale === "yes" && (
