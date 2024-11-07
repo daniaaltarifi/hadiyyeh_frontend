@@ -61,13 +61,6 @@ const App = () => {
 
     return null;
   };
-
-  // const [cartItems, setCartItems] = useState([
-  //   { name: 'US POLO ASSN. 1000-01 WATCH FOR MEN', price: 10 },
-  //   { name: 'LATTAFA ANA ABIYEDH EDP UNISEX', price: 20 },
-  //   // ... more cart items
-  // ]);
-
   const location = useLocation();
 
   return (

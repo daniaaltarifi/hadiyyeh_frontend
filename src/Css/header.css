@@ -16,11 +16,7 @@
   display: flex;
 }
 .small-select {
-  /* Smaller select styling */
   font-size: 14px;
-
-  border-color: rgb(102, 102, 102);
-
   border: none; /* Remove default border */
   box-shadow: none; /* Remove default shadow */
 }
@@ -58,18 +54,12 @@
 /* .social-icons-toggle {
   display: flex;
 } */
-.text-Icons {
-  display: flex;
-  justify-content: flex-start;
-  gap: 10px;
-  padding-left: 7%;
-}
 
 /* .form-control{
   display: none;
 } */
 
-.form-control-borderless {
+/* .form-control-borderless {
   border: none;
 }
 
@@ -79,7 +69,7 @@
   border: none;
   outline: none;
   box-shadow: none;
-}
+} */
 .search_dropdown {
   list-style-type: none;
   background-color: #fff;
@@ -111,15 +101,19 @@
   display: none; /* Default to hidden */
 }
 
-
+.social-icons-toggle {
+  display: none;
+}
 
 /* Media query for small screens */
 @media (max-width: 576px) {
   .navbar-fixed {
     height: 70px;
-    top: 35px; /* Adjust the top to leave space for the banner */
+    /* top: 35px;  */
   }
-
+  .search_dropdown {
+    top: 68%; 
+     }
   /* Adjust the logo size for smaller screens */
   .navbar-brand img {
     max-height: 50px; /* Smaller logo size */
@@ -133,31 +127,19 @@
   .banner-fixed {
     padding: 0.1% 0%;
   }
-  .social-icons-toggle {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    padding: 1rem;
-  }
-  .small-select {
-    /* Smaller select styling */
-    font-size: 12px;
-    background-color: rgb(102, 102, 102);
-    border-color: rgb(102, 102, 102);
-    color: rgb(102, 102, 102);
-  }
+
 }
 
 /* Media query for medium screens */
 @media (max-width: 768px) {
   .navbar-fixed {
     height: 80px;
-    top: 35px;
+    /* top: 35px; */
   }
 
   .navbar2-fixed {
     height: 80px;
-    top: 110px;
+    /* top: 110px; */
   }
   /* Adjust the logo size for medium screens */
   .navbar-brand img {
@@ -198,15 +180,8 @@
   .social-icons-toggle {
     display: flex;
     justify-content: center;
-    gap: 10px;
+     gap: 10px;
     padding: 1rem;
-  }
-  .small-select {
-    /* Smaller select styling */
-    font-size: 12px;
-    background-color: rgb(102, 102, 102);
-    border-color: rgb(102, 102, 102);
-    color: rgb(102, 102, 102);
   }
 }
 
@@ -224,11 +199,11 @@
 @media (max-width: 820px) {
   .navbar-fixed {
     height: 80px;
-    top: 33px;
+    /* top: 33px; */
   }
   .navbar2-fixed {
     height: 80px;
-    top: 110px;
+    /* top: 110px; */
   }
   /* Adjust the logo size for medium screens */
   .navbar-brand img {
@@ -248,13 +223,7 @@
   .text-Icons {
     gap: 0px;
   }
-  .small-select {
-    /* Smaller select styling */
-    font-size: 12px;
-    background-color: rgb(102, 102, 102);
-    border-color: rgb(102, 102, 102);
-    color: rgb(102, 102, 102);
-  }
+
 }
 
 /* Ensure the banner height is consistent across all screen sizes */
@@ -271,11 +240,11 @@
 @media (max-width: 1280px) {
   .navbar-fixed {
     height: 80px;
-    top: 33px;
+    top: 25px;
   }
   .navbar2-fixed {
     height: 80px;
-    top: 110px;
+    top: 101px;
   }
   /* Adjust the logo size for medium screens */
   .navbar-brand img {
@@ -292,7 +261,5 @@
   }
 }
 /* Hide the social icons on large screens */
-.social-icons-toggle {
-  display: none;
-}
+
 /* Spacer div to avoid content being hidden under the navbar */

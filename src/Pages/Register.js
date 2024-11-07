@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Container, Row, Col, Button, Form, Spinner } from "react-bootstrap";
+import React from "react";
+import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import { useThemeHook } from "../GlobalComponents/ThemeProvider";
 import "react-phone-input-2/lib/high-res.css";
 import axios from "axios";
@@ -95,19 +95,6 @@ const Register = () => {
                 required
               />
             </Form.Group>
-            {/* <Form.Group className="mb-3">
-                            <Form.Label>Username</Form.Label>
-                            <Form.Control name="username" type="text" placeholder="Username" minLength={3} required />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Mobile number</Form.Label>
-                            <PhoneInput
-                                country={'in'}
-                                value={number}
-                                onChange={phone=> setNumber(phone)}
-                                className="text-dark"
-                            />
-                        </Form.Group> */}
             <Form.Group className="mb-3">
               <Form.Label>            {lang === "ar" ? "كلمة السر" : "Password"}
               </Form.Label>

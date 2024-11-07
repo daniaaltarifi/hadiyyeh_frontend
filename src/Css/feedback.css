@@ -2,7 +2,7 @@
   width: 100%;
   max-width: 430px;
   margin: auto;
-  background-color: rgb(241, 239, 237);
+  background-color: #eaeced;
   border-radius: 10px;
 }
 .title_feedback {
@@ -23,4 +23,23 @@
     padding: 1rem .75rem;
     height: 100px;
     margin-bottom: 3vh;
+}
+.rating{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2vh;
+}
+.rating .star {
+  font-size: 24px;
+  color: gray; /* Gray color for unselected stars */
+  cursor: pointer;
+}
+
+.rating .star.filled {
+  color: gold; /* Color for filled stars */
+}
+.error_rating{
+  color: red;
+  text-align: center;
 }

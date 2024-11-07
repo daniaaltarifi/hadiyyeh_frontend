@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Carousel, Image, Container, Row, Col } from "react-bootstrap"; // Import necessary components
-import slider1 from "../images/slider1.webp";
-import slider2 from "../images/slider2.webp";
 import "../Css/homee.css";
 import Cardes from "./Cardes";
 import Fragrances from "./Fragrances";
@@ -23,7 +21,6 @@ const Home = () => {
       try {
         const response = await axios.get(`${API_URL}/slider/`);
         setSlider(response.data);
-        console.log("slider",response.data);
       } catch (error) {
         console.error("Error fetching slider:", error);
       }
@@ -35,7 +32,6 @@ const Home = () => {
     <div>
       <Carousel interval={2000} className="responsive-carousel">
         {slider.map((slide)=>(
-
         <Carousel.Item key={slide.id}>
           <Image
             src={`${API_URL}/${slide.img}`}
@@ -56,7 +52,6 @@ const Home = () => {
                   <p className={theme ? "text-light" : "text-black "}>
                   {slide.subtitle}
                   </p>
-                  {/* <Button variant="outline-secondary" className="SHOP">SHOP FRAGRANCES</Button> */}
                   <button
                     onClick={()=>navigate(`/${lang}/${slide.link_to}`)}
                     type="button"
@@ -75,29 +70,22 @@ const Home = () => {
       
       </Carousel>
 
-      <Cardes apiUrl="product/bymaintype/Fragrance" />
+      <Cardes />
       {/* fragrance mean all type (Fragrances,Bags,Watches) but dynamic */}
       <Fragrances
         title={lang === "ar" ? "العطور" : "Fragrances"}
         apiUrl="product/bymaintype/Fragrance"
-        // navigateTo="/allFragrance"
       />
       <Fragrances
         title={lang === "ar" ? "الحقائب" : "Bags"}
         apiUrl="product/bymaintype/Bag"
-        // navigateTo="/allBag"
       />
       <Fragrances
         title={lang === "ar" ? "الساعات" : "Watches"}
         apiUrl="product/bymaintype/Watch"
-        // navigateTo="/allWatche"
       />
-
-      {/* <Watches/>
-<Bags/> */}
       <Brands />
       <Opinions />
-      {/* <Blogs/> */}
     </div>
   );
 };

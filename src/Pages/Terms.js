@@ -4,6 +4,7 @@ import { useThemeHook } from '../GlobalComponents/ThemeProvider';
 
 function Terms() {
     const [theme] = useThemeHook();
+    window.scrollTo(0, 0);
 
     return (
         <section 
@@ -17,7 +18,7 @@ function Terms() {
             <div className="container py-5">
                 <h2 className="mb-4 text-center">Terms of service
                 </h2>
-                <div className="policy-content">
+                <div className=" ms-3">
                     <h5>OVERVIEW</h5>
                     <p>
                     This website is operated by Hadiyyeh. Throughout the site, the terms “we”, “us” and “our” refer to Hadiyyeh. Hadiyyeh offers this website, including all information, tools, and Services available from this site to you, the user, conditioned upon your acceptance of all terms, conditions, policies, and notices stated here.

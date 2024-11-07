@@ -141,7 +141,7 @@ function FilterAndSort({ products, setFilteredProducts }) {
   ]);
 
   return (
-    <div className="container text-center container-all">
+    <div className="container text-center container-all mt-5">
       <Row className="justify-content-between content-filter">
         <Col lg={8} className="mb-lg-0">
           <div className="d-flex justify-content-between">

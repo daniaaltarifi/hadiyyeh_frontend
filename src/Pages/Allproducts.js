@@ -3,80 +3,117 @@ import "../Css/allproducts.css";
 import { Image } from "react-bootstrap";
 import { useThemeHook } from "../GlobalComponents/ThemeProvider";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
-import { Row, Col } from "react-bootstrap";
-import { IoFilterCircleOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import RightCart from "../components/RightCart";
-import { useCart } from "react-use-cart";
 import FilterAndSort from "../components/FilterAndSort";
 import { useLocation } from "react-router-dom";
 // Set items per page to 16
-const ITEMS_PER_PAGE = 16;
 function Allproducts({ cartItems }) {
   const [theme] = useThemeHook();
-  const { addItem } = useCart();
   const location = useLocation();
   const lang = location.pathname.split("/")[1] || "en";
   const API_URL = process.env.REACT_APP_API_URL;
   const [currentPage, setCurrentPage] = useState(1);
-  const [isOpen, setIsOpen] = useState(false);
   const [isCanvasOpen, setCanvasOpen] = useState(false);
   const [productType, setProductType] = useState("");
   const [mainType, setMainType] = useState("");
   const [season, setSeason] = useState("");
   const [allproducts, setAllProducts] = useState([]);
   const [productlocal, setProductLocal] = useState("");
+
   const [filteredProducts, setFilteredProducts] = useState([]);
+  // useEffect(() => {
+  //   const storedData = localStorage.getItem("productInfo");
+  //   if (storedData) {
+  //     const productInfo = JSON.parse(storedData);
+  //     setMainType(productInfo.mainType);
+  //     setProductType(productInfo.productType);
+  //     setSeason(productInfo.season);
+  //     setProductLocal(productInfo.allproductData);
+  //   }
+  //   let fetchURL;
+  //   if (mainType && productType) {
+  //     fetchURL = `${API_URL}/product/bysubtype/subtype?type=${mainType}&subtype=${productType}`;
+  //   } else if (mainType && !productType) {
+  //     fetchURL = `${API_URL}/product/bymaintype/${mainType}`;
+  //   } else if (!mainType && !productType && season) {
+  //     fetchURL = `${API_URL}/product/get/productbyseason/${season}`;
+  //   } else if (!mainType && !productType && !season && productlocal) {
+  //     fetchURL = `${API_URL}/product/get/allproducts`;
+  //   }
+
+  //   if (fetchURL) {
+  //     fetch(fetchURL)
+  //       .then((response) => response.json())
+  //       .then((data) => {
+  //         setAllProducts(data); // Set all products without sorting
+  //         setFilteredProducts(data); // Initially set filtered products to all products
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error fetching products:", error);
+  //       });
+  //   }
+    
+  // }, [mainType, productType, season, productlocal]);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    const storedData = localStorage.getItem("productInfo");
-    if (storedData) {
-      const productInfo = JSON.parse(storedData);
-      setMainType(productInfo.mainType);
-      setProductType(productInfo.productType);
-      setSeason(productInfo.season);
-      setProductLocal(productInfo.allproductData);
-    }
-    let fetchURL;
-    if (mainType && productType) {
-      fetchURL = `${API_URL}/product/bysubtype/subtype?type=${mainType}&subtype=${productType}`;
-    } else if (mainType && !productType) {
-      fetchURL = `${API_URL}/product/bymaintype/${mainType}`;
-    } else if (!mainType && !productType && season) {
-      fetchURL = `${API_URL}/product/get/productbyseason/${season}`;
-    } else if (!mainType && !productType && !season && productlocal) {
-      fetchURL = `${API_URL}/product/get/allproducts`;
-    }
-
-    if (fetchURL) {
-      fetch(fetchURL)
-        .then((response) => response.json())
-        .then((data) => {
-          setAllProducts(data); // Set all products without sorting
-          setFilteredProducts(data); // Initially set filtered products to all products
-        })
-        .catch((error) => {
-          console.error("Error fetching products:", error);
-        });
-    }
+    window.scrollTo(0, 0);
+    const handleStorageChange = () => {
+      const storedData = localStorage.getItem("productInfo");
+      if (storedData) {
+        const productInfo = JSON.parse(storedData);
+        setMainType(productInfo.mainType);
+        setProductType(productInfo.productType);
+        setSeason(productInfo.season);
+        setProductLocal(productInfo.allproductData);
+      }
+      let fetchURL;
+      if (mainType && productType) {
+        fetchURL = `${API_URL}/product/bysubtype/subtype?type=${mainType}&subtype=${productType}`;
+      } else if (mainType && !productType) {
+        fetchURL = `${API_URL}/product/bymaintype/${mainType}`;
+      } else if (!mainType && !productType && season) {
+        fetchURL = `${API_URL}/product/get/productbyseason/${season}`;
+      } else if (!mainType && !productType && !season && productlocal) {
+        fetchURL = `${API_URL}/product/get/allproducts`;
+      }
+      if (fetchURL) {
+        setIsLoading(true); // Set loading state before fetching
+        fetch(fetchURL)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            setAllProducts(data);
+            console.log("product",data)
+            setFilteredProducts(data);
+          })
+          .catch((error) => {
+            console.error("Error fetching products:", error);
+          })
+          .finally(() => {
+            setIsLoading(false); // Reset loading state after fetching
+          });
+      } else {
+        setIsLoading(false); // Reset loading if no fetch URL
+      }
+    };
+    // Listen for custom event
+    window.addEventListener("productInfoUpdated", handleStorageChange);
+    // Initial check when component mounts
+    handleStorageChange();
+    return () => {
+      window.removeEventListener("productInfoUpdated", handleStorageChange);
+    };
   }, [mainType, productType, season, productlocal]);
-
+  
   const toggleCanvas = () => {
     setCanvasOpen(!isCanvasOpen);
   };
 
-  // Safeguard to ensure products is defined before accessing its length
-  const validProducts = Array.isArray(allproducts) ? allproducts : [];
-
-  // Calculate the total number of pages
-  // const totalPages = Math.ceil(validProducts.length / ITEMS_PER_PAGE);
-
-  // Get current products for the active page
-  const indexOfLastProduct = currentPage * ITEMS_PER_PAGE;
-  const indexOfFirstProduct = indexOfLastProduct - ITEMS_PER_PAGE;
-  // const currentProducts = validProducts.slice(
-  //   indexOfFirstProduct,
-  //   indexOfLastProduct
-  // );
   const productsPerPage = 16; // Example value for pagination
 
   const currentProducts = filteredProducts.slice(
@@ -101,10 +138,10 @@ function Allproducts({ cartItems }) {
     <section
       className={
         theme
-          ? "bg-light-black text-light margin_section full-screen-slider"
-          : "bg-light text-black margin_section full-screen-slider"
+          ? "bg-light-black text-light margin_section "
+          : "bg-light text-black margin_section "
       }
-      data-aos="fade-up"
+      // data-aos="fade-up"
     >
       <div className="container text-center container-all">
         <FilterAndSort
@@ -112,8 +149,11 @@ function Allproducts({ cartItems }) {
           setFilteredProducts={setFilteredProducts}
         />
         {/* Backdrop for Offcanvas */}
+
         <div className="row mt-5 justify-content-center">
-          {currentProducts.length > 0 ? (
+          {isLoading ? ( null // Show a loading message
+        )
+          :currentProducts.length > 0 ? (
             currentProducts.map((product) => (
               <div
                 className="col-lg-3 col-md-4 col-sm-12 product-allcard mb-5"
@@ -159,17 +199,6 @@ function Allproducts({ cartItems }) {
                       <div className="d-flex justify-content-center">
                         <button
                           type="button"
-                          // onClick={() => {
-                          //   // Ensure you pass the necessary properties to addItem
-                          //   addItem({
-                          //     id: product.id,
-                          //     title: product.name,
-                          //     price: product.sizes[0]?.after_price,
-                          //     size:product.sizes[0]?.Size,
-                          //     first_image: `${API_URL}/${product.first_image}`, // Add image to cart item
-                          //   });
-                          //   setCanvasOpen(!isCanvasOpen);
-                          // }}
                           className={
                             theme
                               ? "text-light btn btn-card"
@@ -180,7 +209,7 @@ function Allproducts({ cartItems }) {
                         </button>
                       </div>
                     ) : (
-                      <div className="d-flex justify-content-center">
+                      <div >
                         <button
                           type="button"
                           disabled
@@ -204,6 +233,7 @@ function Allproducts({ cartItems }) {
             </div>
           )}
         </div>
+    
         {/* Pagination Controls */}
         <div className="pagination-controls m-5">
           <a

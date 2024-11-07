@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Container, Navbar, Nav, Image } from "react-bootstrap";
 import { ThemeContext } from "../GlobalComponents/ThemeProvider";
-import { BiSun, BiMoon, BiCart } from "react-icons/bi";
+import { BiSun, BiMoon } from "react-icons/bi";
 import { GrCart } from "react-icons/gr";
 import { VscAccount } from "react-icons/vsc";
 
@@ -13,7 +13,6 @@ import { IoIosSearch } from "react-icons/io";
 import { BsInstagram } from "react-icons/bs";
 import { FaFacebook } from "react-icons/fa";
 import { RiTiktokFill } from "react-icons/ri";
-import { MdGTranslate } from "react-icons/md";
 import Logo from "../images/Logo.avif";
 import RightCart from "./RightCart";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -21,8 +20,9 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import BrandsData from "./BrandsData";
 import axios from "axios";
 import FetchCartData from "./FetchCardData";
+import SearchBar from "./SearchBar";
 
-const Header = ({ cartItems, onProductTypeChange }) => {
+const Header = ({ cartItems }) => {
   const { theme, setThemeMode } = useContext(ThemeContext);
   const [darkMode, setDarkMode] = useState(theme);
   const [showBanner, setShowBanner] = useState(true); // State for the banner visibility
@@ -41,38 +41,34 @@ const Header = ({ cartItems, onProductTypeChange }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [selectedOption, setSelectedOption] = useState(lang);
   const [banners, setBanners] = useState([]);
+  const { isEmpty, totalItems } = useCart();
+  const [productType, setProductType] = useState("");
+  
+  const numberofitemsincart = !user ? totalItems : cart.length;
   const handleSelection = (event) => {
     const newLang = event.target.value;
     setSelectedOption(newLang);
-    // Construct the new URL with the new language
     const newPath = `/${newLang}${location.pathname.substring(
       lang.length + 1
-    )}`; // Adjust path for new language
+    )}`;
     navigate(newPath);
   };
-  // Optionally, update the selected option if the language in the URL changes (e.g., through manual URL entry)
   useEffect(() => {
     setSelectedOption(lang);
-    const fetchSeason = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios(`${API_URL}/product/get/season`);
-        setseasons(response.data);
-      } catch (error) {
-        console.error("Error fetching season:", error);
-      }
-    };
+        const [seasonResponse, codeResponse] = await Promise.all([
+          axios(`${API_URL}/product/get/season`),
+          axios(`${API_URL}/discountcode/getcodes`),
+        ]);
 
-    fetchSeason();
-    const fetchCode = async () => {
-      try {
-        const response = await axios(`${API_URL}/discountcode/getcodes`);
-        console.log("code", response.data);
-        setBanners(response.data);
+        setseasons(seasonResponse.data);
+        setBanners(codeResponse.data);
       } catch (error) {
-        console.error("Error fetching code:", error);
+        console.error("Error fetching data:", error);
       }
     };
-    fetchCode();
+    fetchData();
   }, [lang]);
 
   useEffect(() => {
@@ -97,7 +93,6 @@ const Header = ({ cartItems, onProductTypeChange }) => {
   };
   useEffect(() => {
     setThemeMode(darkMode);
-
     // Function to handle scroll
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -106,7 +101,6 @@ const Header = ({ cartItems, onProductTypeChange }) => {
         setShowBanner(true);
       }
     };
-
     // Adding the scroll event listener
     window.addEventListener("scroll", handleScroll);
 
@@ -115,8 +109,6 @@ const Header = ({ cartItems, onProductTypeChange }) => {
     };
   }, [darkMode, setThemeMode]);
 
-  const { isEmpty, totalItems } = useCart();
-  const [productType, setProductType] = useState("");
   useEffect(() => {
     const getproductForSearch = async () => {
       try {
@@ -128,6 +120,7 @@ const Header = ({ cartItems, onProductTypeChange }) => {
     };
     getproductForSearch();
   }, [openSearch]);
+
   const handleType = (
     title,
     subtype = "",
@@ -140,20 +133,24 @@ const Header = ({ cartItems, onProductTypeChange }) => {
       season: season,
       allproductData: allproductData,
     };
-
     localStorage.setItem("productInfo", JSON.stringify(productInfo)); // Store the object as a JSON string
     setProductType(subtype); // Update state
+    window.dispatchEvent(new Event("productInfoUpdated"));
   };
 
   const handleInputChange = (event) => {
     const query = event.target.value;
     setSearchQuery(query);
-    // Filter the products based on the search query
     const filteredResults = allproductData.filter((product) =>
       product.name.toLowerCase().includes(query.toLowerCase())
     );
     setSearchResults(filteredResults);
   };
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const handleToggleMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+  const storedUser = JSON.parse(localStorage.getItem("account"));
   return (
     <>
       {/* Banner section for the discount code */}
@@ -164,22 +161,20 @@ const Header = ({ cartItems, onProductTypeChange }) => {
 
         <span
           style={{
-            maxWidth: "25rem", // Optional: Limit width for larger screens
-            width: "100%", // Ensure it scales with screen width
-            textAlign: "center", // Center text within the banner
-            display: "inline-block", // Allow the span to sit alongside the buttons
+            maxWidth: "25rem",
+            width: "50%",
+            textAlign: "center",
+            display: "inline-block",
           }}
         >
           {banners.length > 0 && currentBannerIndex < banners.length
             ? `USE CODE "${banners[currentBannerIndex].code}" FOR ${banners[currentBannerIndex].discount_percentage}%`
             : "Loading..."}
         </span>
-
         <button onClick={handleNext} aria-label="Next banner">
           <IoIosArrowForward style={{ color: "white", fontSize: "15px" }} />
         </button>
       </div>
-
       {/* Top section with logo and icons */}
       <Navbar
         variant={darkMode ? "dark" : "light"}
@@ -203,7 +198,6 @@ const Header = ({ cartItems, onProductTypeChange }) => {
                 <option value="ar">Ar</option>
               </select>
             </div>
-
             {/* Dark Mode Toggle */}
             <Nav.Link
               className={`${
@@ -214,15 +208,12 @@ const Header = ({ cartItems, onProductTypeChange }) => {
               {darkMode ? <BiSun size="1.2rem" /> : <BiMoon size="1.2rem" />}
             </Nav.Link>
           </Nav>
-
           {/* Centered Logo */}
           <Link to="/">
             <Navbar.Brand className="mx-auto">
-              {/* <img src="/images/logo2.png" alt="Logo" style={{ maxHeight: '50px' }} /> */}
-
               <Image
                 src={Logo}
-                style={{ maxHeight: "70px", margin: "10px" }}
+                style={{ maxHeight: "70px", margin: "10px", width: "70px",height:"70px" }}
                 thumbnail
                 fluid
                 roundedCircle
@@ -230,7 +221,6 @@ const Header = ({ cartItems, onProductTypeChange }) => {
               />
             </Navbar.Brand>
           </Link>
-
           {/* Right Icons: Dark mode toggle,Translate and Cart*/}
           {/* Right Icons: Dark mode toggle, Cart, Account */}
           <Nav className="d-flex align-items-center">
@@ -243,73 +233,32 @@ const Header = ({ cartItems, onProductTypeChange }) => {
                 {openSearch && (
                   <nav className="navbar">
                     <div className="container-fluid ">
-                      <form className="d-flex" role="search">
-                        <input
-                          className="form-control me-2  search-bar"
-                          type="search"
-                          placeholder="Search"
-                          aria-label="Search"
-                          onChange={handleInputChange}
-                        />
-                        {searchQuery && (
-                          <ul className="search_dropdown">
-                            {searchResults.length > 0 ? (
-                              searchResults.map((product) => (
-                                <li
-                                  key={product.id}
-                                  onClick={() => {
-                                    navigate(
-                                      `${lang}/product-details/${product.id}`
-                                    );
-                                    setOpenSearch(false);
-                                    window.scrollTo(0, 0);
-                                  }}
-                                >
-                                  <img
-                                    src={`${API_URL}/${product.first_image}`}
-                                    alt={product.name}
-                                    height={"50"}
-                                    width={"50"}
-                                  />
-                                  {product.name}
-                                </li>
-                              ))
-                            ) : (
-                              <li>No products found.</li>
-                            )}
-                          </ul>
-                        )}
-                      </form>
+                      <SearchBar
+                        searchQuery={searchQuery}
+                        searchResults={searchResults}
+                        handleInputChange={handleInputChange}
+                        setOpenSearch={setOpenSearch}
+                        setIsMenuOpen={setIsMenuOpen}
+
+                      />
                     </div>
                   </nav>
                 )}
                 <IoIosSearch
                   size="1.3rem"
                   onClick={() => setOpenSearch(!openSearch)}
-                  className="ms-2  search-bar" // Adds a margin to separate icon from input
+                  className="ms-2  search-bar"
                 />
               </div>
             </div>
-            {user ? (
-              <Link
-                to={`/${lang}/my-account`}
-                className={`nav-link ${
-                  darkMode ? "text-dark-primary" : "text-light-primary"
-                } d-none d-md-block`}
-              >
-                <VscAccount size="1.2rem" />
-              </Link>
-            ) : (
-              <Link
-                to={`/${lang}/sign-in`}
-                className={`nav-link ${
-                  darkMode ? "text-dark-primary" : "text-light-primary"
-                } d-none d-md-block`}
-              >
-                <VscAccount size="1.2rem" />
-              </Link>
-            )}
-
+            <Link
+              to={storedUser ? `${lang}/my-account` : `${lang}/sign-in`}
+              className={`nav-link ${
+                darkMode ? "text-dark-primary" : "text-light-primary"
+              } d-none d-md-block`}
+            >
+              <VscAccount size="1.2rem" />
+            </Link>
             <Link
               style={{ cursor: "pointer" }}
               to={`${lang}/cart`}
@@ -318,11 +267,12 @@ const Header = ({ cartItems, onProductTypeChange }) => {
               } `}
             >
               <GrCart size="1.2rem" />
-              {!isEmpty && (
-                <span style={{ position: "relative" }}>
-                  {!user ? totalItems : cart.length}
-                </span>
-              )}
+              {/* {!isEmpty && ( */}
+              <span style={{ position: "relative" }}>
+                {/* {!user ? totalItems : cart.length} */}
+                {numberofitemsincart}
+              </span>
+              {/* )} */}
             </Link>
           </Nav>
         </Container>
@@ -340,16 +290,20 @@ const Header = ({ cartItems, onProductTypeChange }) => {
               theme ? "bg-light-black border-bottom" : "bg-light border-bottom"
             }`}
           >
-            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
+            <Navbar.Toggle
+              onClick={handleToggleMenu}
+              aria-controls={`offcanvasNavbar-expand-${expand}`}
+            />
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${expand}`}
               aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
               placement="end"
+              show={isMenuOpen} // Tie the show prop to your state
+              onHide={() => setIsMenuOpen(false)} // Close the menu when the offcanvas is hidden
               className={`${
                 darkMode ? "bg-dark text-light" : "bg-light text-dark"
               }`}
             >
-              {" "}
               <Offcanvas.Header
                 closeButton
                 className={`${
@@ -362,35 +316,54 @@ const Header = ({ cartItems, onProductTypeChange }) => {
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-center flex-grow-1 pe-3">
-                  <Nav.Link href="/">
+                  <Nav.Link
+                    as={Link}
+                    to="/"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
                     {lang === "ar" ? "الرئيسية" : "HOME"}
                   </Nav.Link>
-
                   <NavDropdown
                     title={lang === "ar" ? "العطور" : "FRAGRANCES"}
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
                   >
                     <NavDropdown.Item
-                      href={`/${lang}/allproducts`}
-                      onClick={() => handleType("Fragrance", "1")}
+                      as={Link}
+                      to={`/${lang}/allproducts`}
+                      onClick={() => {
+                        handleType("Fragrance", "1");
+                        setIsMenuOpen(false);
+                      }}
                     >
                       {lang === "ar" ? "رجال" : "FOR HIM"}
                     </NavDropdown.Item>
                     <NavDropdown.Item
-                      href={`/${lang}/allproducts`}
-                      onClick={() => handleType("Fragrance", "2")}
+                      as={Link}
+                      to={`/${lang}/allproducts`}
+                      onClick={() => {
+                        handleType("Fragrance", "2");
+                        setIsMenuOpen(false);
+                      }}
                     >
                       {lang === "ar" ? "نساء" : "FOR HER"}
                     </NavDropdown.Item>
                     <NavDropdown.Item
-                      href={`/${lang}/allproducts`}
-                      onClick={() => handleType("Fragrance", "3")}
+                      as={Link}
+                      to={`/${lang}/allproducts`}
+                      onClick={() => {
+                        handleType("Fragrance", "3");
+                        setIsMenuOpen(false);
+                      }}
                     >
                       {lang === "ar" ? "للجنسين" : "UNISEX"}
                     </NavDropdown.Item>
                     <NavDropdown.Item
-                      href={`/${lang}/allproducts`}
-                      onClick={() => handleType("Fragrance")}
+                      as={Link}
+                      to={`/${lang}/allproducts`}
+                      onClick={() => {
+                        handleType("Fragrance");
+                        setIsMenuOpen(false);
+                      }}
                     >
                       {lang === "ar" ? "جميع العطور" : " ALL FRAGRANCES   "}
                     </NavDropdown.Item>
@@ -400,26 +373,42 @@ const Header = ({ cartItems, onProductTypeChange }) => {
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
                   >
                     <NavDropdown.Item
-                      href={`/${lang}/allproducts`}
-                      onClick={() => handleType("Watches", "1")}
+                      as={Link}
+                      to={`/${lang}/allproducts`}
+                      onClick={() => {
+                        handleType("Watches", "1");
+                        setIsMenuOpen(false);
+                      }}
                     >
                       {lang === "ar" ? "رجال" : "FOR HIM"}
                     </NavDropdown.Item>
                     <NavDropdown.Item
-                      href={`/${lang}/allproducts`}
-                      onClick={() => handleType("Watches", "2")}
+                      as={Link}
+                      to={`/${lang}/allproducts`}
+                      onClick={() => {
+                        handleType("Watches", "2");
+                        setIsMenuOpen(false);
+                      }}
                     >
                       {lang === "ar" ? "نساء" : "FOR HER"}
                     </NavDropdown.Item>
                     <NavDropdown.Item
-                      href={`/${lang}/allproducts`}
-                      onClick={() => handleType("Watches", "3")}
+                      as={Link}
+                      to={`/${lang}/allproducts`}
+                      onClick={() => {
+                        handleType("Watches", "3");
+                        setIsMenuOpen(false);
+                      }}
                     >
                       {lang === "ar" ? "للجنسين" : "UNISEX"}
                     </NavDropdown.Item>
                     <NavDropdown.Item
-                      href={`/${lang}/allproducts`}
-                      onClick={() => handleType("Watch")} // Call with just main type for "ALL WATCHES"
+                      as={Link}
+                      to={`/${lang}/allproducts`}
+                      onClick={() => {
+                        handleType("Watch");
+                        setIsMenuOpen(false);
+                      }}
                     >
                       {lang === "ar" ? "جميع العطور" : "    ALL WATCHES    "}
                     </NavDropdown.Item>
@@ -429,26 +418,42 @@ const Header = ({ cartItems, onProductTypeChange }) => {
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
                   >
                     <NavDropdown.Item
-                      href={`/${lang}/allproducts`}
-                      onClick={() => handleType("Bags", "1")}
+                      as={Link}
+                      to={`/${lang}/allproducts`}
+                      onClick={() => {
+                        handleType("Bags", "1");
+                        setIsMenuOpen(false);
+                      }}
                     >
-                      LAPTOP BAGS{" "}
+                      LAPTOP BAGS
                     </NavDropdown.Item>
                     <NavDropdown.Item
-                      href={`/${lang}/allproducts`}
-                      onClick={() => handleType("Bags", "2")}
+                      as={Link}
+                      to={`/${lang}/allproducts`}
+                      onClick={() => {
+                        handleType("Bags", "2");
+                        setIsMenuOpen(false);
+                      }}
                     >
                       TRAVEL POUCHES{" "}
                     </NavDropdown.Item>
                     <NavDropdown.Item
-                      href={`/${lang}/allproducts`}
-                      onClick={() => handleType("Bags", "3")}
+                      as={Link}
+                      to={`/${lang}/allproducts`}
+                      onClick={() => {
+                        handleType("Bags", "3");
+                        setIsMenuOpen(false);
+                      }}
                     >
                       BACKPACK
                     </NavDropdown.Item>
                     <NavDropdown.Item
-                      href={`/${lang}/allproducts`}
-                      onClick={() => handleType("Bag")}
+                      as={Link}
+                      to={`/${lang}/allproducts`}
+                      onClick={() => {
+                        handleType("Bag");
+                        setIsMenuOpen(false);
+                      }}
                     >
                       ALL BAGS & POUCHES
                     </NavDropdown.Item>
@@ -459,8 +464,10 @@ const Header = ({ cartItems, onProductTypeChange }) => {
                   >
                     {brands.map((brand) => (
                       <NavDropdown.Item
+                        as={Link}
                         key={brand._id}
-                        href={`/${lang}/productbybrand/${brand.brand_name}`}
+                        onClick={() => setIsMenuOpen(false)}
+                        to={`/${lang}/productbybrand/${brand.brand_name}`}
                       >
                         {brand.brand_name}
                       </NavDropdown.Item>
@@ -473,27 +480,35 @@ const Header = ({ cartItems, onProductTypeChange }) => {
                     {seasons.map((season, index) => (
                       <NavDropdown.Item
                         key={index}
-                        onClick={() => handleType("", "", `${season.season}`)}
-                        href={`/${lang}/allproducts`}
-
-                        // href={`/${lang}/`}
+                        as={Link}
+                        onClick={() => {
+                          handleType("", "", `${season.season}`);
+                          setIsMenuOpen(false);
+                        }}
+                        to={`/${lang}/allproducts`}
                       >
                         {season.season}
                       </NavDropdown.Item>
                     ))}
                   </NavDropdown>
-
-                  <Nav.Link href={`/${lang}/gift`}>
-                    {lang === "ar" ? "شحن المحفظة" : "WALLET"}
+                  <Nav.Link
+                    as={Link}
+                    to={`/${lang}/gift`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {lang === "ar" ? " المحفظة" : "WALLET"}
                   </Nav.Link>
                   <Nav.Link
-                    href={`/${lang}/allproducts`}
-                    onClick={() => handleType("", "", "", "allproducts")}
+                    as={Link}
+                    to={`/${lang}/allproducts`}
+                    onClick={() => {
+                      handleType("", "", "", "allproducts");
+                      setIsMenuOpen(false);
+                    }}
                   >
                     {lang === "ar" ? "جميع المنتجات" : "ALL PRODUCTS"}
                   </Nav.Link>
                 </Nav>
-
                 {/* Social media icons (hidden on large screens, visible on small screens) */}
                 {/* Social media icons (for dark mode) */}
                 <div className="social-icons-toggle">
@@ -529,7 +544,7 @@ const Header = ({ cartItems, onProductTypeChange }) => {
                   </a>
                 </div>
                 {/* Icons toggle (dark mode, account, translate) centered like social-icons-toggle */}
-                <div className="social-icons-toggle d-flex d-md-none justify-content-center">
+                  <div className="social-icons-toggle d-flex d-md-none justify-content-center" >
                   <Nav.Link
                     className={
                       darkMode ? "text-dark-primary" : "text-light-primary"
@@ -542,23 +557,23 @@ const Header = ({ cartItems, onProductTypeChange }) => {
                       <BiMoon size="1.2rem" />
                     )}
                   </Nav.Link>
-
                   <Link
-                    to={`${lang}/my-account`}
+                    onClick={() => setIsMenuOpen(false)}
+                    to={storedUser ? `${lang}/my-account` : `${lang}/sign-in`}
                     className={`nav-link ${
                       darkMode ? "text-dark-primary" : "text-light-primary"
                     } mx-2`}
                   >
                     <VscAccount size="1.2rem" />
                   </Link>
-                  <form className="d-flex offcanvas-search-bar" role="search">
-                    <input
-                      className="form-control me-2"
-                      type="search"
-                      placeholder="Search"
-                      aria-label="Search"
-                    />
-                  </form>
+                   <SearchBar
+                        searchQuery={searchQuery}
+                        searchResults={searchResults}
+                        handleInputChange={handleInputChange}
+                        setOpenSearch={setOpenSearch}
+                        setIsMenuOpen={setIsMenuOpen}
+
+                      />
                 </div>
               </Offcanvas.Body>
             </Navbar.Offcanvas>

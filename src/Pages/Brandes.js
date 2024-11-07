@@ -6,7 +6,6 @@ import { useThemeHook } from "../GlobalComponents/ThemeProvider";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import axios from "axios";
 import { Link,useLocation } from "react-router-dom";
 import BrandsData from "../components/BrandsData";
 const Brands = () => {
@@ -86,6 +85,7 @@ const Brands = () => {
                 <Image
                   src={`${API_URL}/${brand.brand_img}`}
                   alt={brand.brand_name}
+                  loading="lazy"
                   className="brand-image img-fluid"  />
                 <p
                   className={
@@ -104,7 +104,11 @@ const Brands = () => {
             <div key={brand.id} className="text-center brand-image-container ">
               <Link
                 to={`productbybrand/${brand.brand_name}`}
-                style={{ textDecoration: "none" }}
+                style={{ textDecoration: "none"}}
+                className={
+                  theme
+                    ? "bg-light-black text-light margin_section full-screen-slider"
+                    : "bg-light text-black  full-screen-slider" }
               >
                 <Image
                   src={`${API_URL}/${brand.brand_img}`}

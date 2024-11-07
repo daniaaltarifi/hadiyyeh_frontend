@@ -7,14 +7,12 @@ import { Row, Col } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import RightCart from "../components/RightCart";
 import { useLocation } from "react-router-dom";
-import { useCart } from "react-use-cart";
 import FilterAndSort from "../components/FilterAndSort";
 // Set items per page to 16
 const ITEMS_PER_PAGE = 16;
 function BrandsProduct({ cartItems }) {
   const [theme] = useThemeHook();
   const location = useLocation();
-  const { addItem } = useCart();
   const API_URL = process.env.REACT_APP_API_URL;
   const lang = location.pathname.split("/")[1] || "en";
   const { brand } = useParams();
@@ -32,17 +30,12 @@ function BrandsProduct({ cartItems }) {
   const toggleOffcanvas = () => {
     setIsOpen(!isOpen);
   };
-  // Safeguard to ensure products is defined before accessing its length
-  const validProducts = Array.isArray(productByBrand) ? productByBrand : [];
-  // Calculate the total number of pages
-  const totalPages = Math.ceil(validProducts.length / ITEMS_PER_PAGE);
-  // Get current products for the active page
-  const indexOfLastProduct = currentPage * ITEMS_PER_PAGE;
-  const indexOfFirstProduct = indexOfLastProduct - ITEMS_PER_PAGE;
-  const currentProducts = validProducts.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
+
+  const currentProductsByBrand = filteredProducts.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
   );
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
   // Handle page navigation
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -63,7 +56,6 @@ function BrandsProduct({ cartItems }) {
           `${API_URL}/product/get/productbybrands/${brand}`
         );
         const data = await response.json();
-        console.log("brand", data[0].brand_img);
         setBrandName(data[0].brand_name);
         setBrandImg(data[0].brand_img);
         setProductByBrand(data); // Set the products state
@@ -74,7 +66,7 @@ function BrandsProduct({ cartItems }) {
     };
 
     fetchProductsByBrand();
-  }, []);
+  }, [brand]);
   return (
     <section
       className={
@@ -82,9 +74,8 @@ function BrandsProduct({ cartItems }) {
           ? "bg-light-black text-light margin_section full-screen-slider"
           : "bg-light text-black margin_section full-screen-slider"
       }
-      data-aos="fade-up"
     >
-      <div className="container text-center container-all">
+      {productByBrand.length > 0 ? ( <div className="container text-center container-all">
         <Row className="mt-5">
           <Col
             xs={12}
@@ -96,9 +87,9 @@ function BrandsProduct({ cartItems }) {
           </Col>
           <Col xs={12} md={6} lg={6}>
             <Image
-              src={`${API_URL}/${brandImg}`}
+              src={` ${API_URL}/${brandImg} `}
               className="img-fluid brand_img m-3 "
-              alt="First slide"
+              alt="brand img"
               height={"100px"}
               width={"300px"}
             />{" "}
@@ -117,7 +108,7 @@ function BrandsProduct({ cartItems }) {
           ></div>
         )}
         <div className="row mt-5 justify-content-center">
-          {productByBrand.map((product) => (
+          {currentProductsByBrand.map((product) => (
             <div
               className="col-lg-3 col-md-4 col-sm-12 product-allcard mb-5"
               key={product.id}
@@ -163,18 +154,6 @@ function BrandsProduct({ cartItems }) {
                   {product.instock === "yes" ? (
                     <div className="d-flex justify-content-center">
                       <button
-                        // onClick={() => {
-                        //   // Ensure you pass the necessary properties to addItem
-                        //   addItem({
-                        //     id: product.id,
-                        //     title: product.name,
-                        //     price: product.after_price,
-                        //     size: product.size,
-                        //     first_image: `${API_URL}/${product.images}`, // Add image to cart item
-                        //   });
-                        //   setCanvasOpen(!isCanvasOpen);
-                        //   // navigate("/cart"); // Navigate to the cart page after adding the item
-                        // }}
                         type="button"
                         className={
                           theme
@@ -226,7 +205,8 @@ function BrandsProduct({ cartItems }) {
             <IoIosArrowForward size={20} />
           </a>
         </div>
-      </div>
+      </div>): <div className="m-5 text-center"> No Product Found For This Brand</div>}
+     
       {/* Include the RightCart component */}
       <RightCart
         cartItems={cartItems}

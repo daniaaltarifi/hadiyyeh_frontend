@@ -1,13 +1,13 @@
-.full-screen-slider {
+/* .full-screen-slider {
  
  
     overflow: hidden;
     padding: 0;
   }
   
+   */
   
-  
-  .slick-dots {
+  /* .slick-dots {
     position: absolute;
    bottom: 0;
     width: 100%;
@@ -18,10 +18,10 @@
   
   .slick-dots li {
     display: inline-block;
-    margin: 0 5px; /* Adjust spacing */
-  }
-  .container-fluid {
-    padding: 0; /* Remove padding from the container */
+    margin: 0 5px;
+  } */
+  /* .container-fluid {
+    padding: 0; 
   }
   .container-fluid h3 {
     font-size: 2.25rem;
@@ -29,7 +29,7 @@
     font-weight: 400;
    
    
-  }
+  } */
   .btn-card{
   width: 150px !important;
    

@@ -5,9 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "../Css/cardes.css";
 import { Image } from "react-bootstrap"; // Import necessary components
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import { useThemeHook } from "../GlobalComponents/ThemeProvider";
-import { useCart } from "react-use-cart";
 
 const settings = {
   speed: 300,
@@ -17,7 +15,7 @@ const settings = {
   autoplaySpeed: 2000,
   infinite: false,
   dots: true, // Remove dots
-  centerMode: true, // Disable center mode to avoid spacing issues
+  centerMode: false, // Disable center mode to avoid spacing issues
   responsive: [
     {
       breakpoint: 1024,
@@ -47,18 +45,17 @@ const settings = {
   ],
 };
 
-function Fragrances({ title, apiUrl, navigateTo }) {
+function Fragrances ({ title, apiUrl }) {
   const [theme] = useThemeHook();
-  const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_API_URL;
   const [products, setProducts] = useState([]);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await fetch(`${API_URL}/${apiUrl}`);
-        // Parse the JSON data
         const data = await response.json();
-        setProducts(data); // Set the products state
+        const last15product=data.slice(-12)
+        setProducts(last15product); // Set the products state
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -73,7 +70,7 @@ function Fragrances({ title, apiUrl, navigateTo }) {
           ? "bg-light-black text-light margin_section full-screen-slider"
           : "bg-light text-black margin_section full-screen-slider"
       }
-      data-aos="fade-up"
+      // data-aos="fade-up"
     >
       <div className="container-fluid text-center">
         <h1 className={theme ? "text-light  m-5" : "text-black  m-5"}>
@@ -101,6 +98,8 @@ function Fragrances({ title, apiUrl, navigateTo }) {
                       src={`${API_URL}/${product.first_image}`}
                       className="slider_img_home fargrances-image "
                       alt={product.name}
+                      loading="lazy"
+
                     />
                     {/* Button placed on top of the image, aligned left */}
                     {product.sale === "yes" && (

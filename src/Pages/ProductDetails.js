@@ -9,8 +9,6 @@ import { Link, useParams } from "react-router-dom";
 import { LuShare2 } from "react-icons/lu";
 import { FiMinus } from "react-icons/fi";
 import { IoMdAdd } from "react-icons/io";
-import { BsCartCheck } from "react-icons/bs";
-import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import YouMayAlsoLike from "./YouMayAlsoLike";
 import RightCart from "../components/RightCart";
@@ -21,16 +19,13 @@ const ProductDetails = ({cartItems}) => {
   const [theme] = useThemeHook();
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
-  const navigate = useNavigate();
-  const location = useLocation();
   const API_URL = process.env.REACT_APP_API_URL;
-  const lang = location.pathname.split("/")[1] || "en";
+  const REACT_APP_URL_WEBSITE = process.env.REACT_APP_URL_WEBSITE;
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const { id } = useParams();
   const [productData, setProductData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [largeImage, setLargeImage] = useState(null);
   const [activeImage, setActiveImage] = useState(null);
   const [after_price, setafter_price] = useState(null);
@@ -49,7 +44,6 @@ const ProductDetails = ({cartItems}) => {
         setProductData(response.data);
       } catch (error) {
         console.error("Error fetching product details:", error);
-        setError("Failed to fetch product details");
       } finally {
         setLoading(false);
       }
@@ -82,9 +76,9 @@ const ProductDetails = ({cartItems}) => {
       }
     }
   }, [productData]);
-  const handleCheckout = () => {
-    navigate(`/${lang}/cheakOut`);
-  };
+  // const handleCheckout = () => {
+  //   navigate(`/${lang}/cheakOut`);
+  // };
   if (loading) {
     return (
       <div 
@@ -128,16 +122,15 @@ const ProductDetails = ({cartItems}) => {
       setSelectedColor(color);
     }
   };
-
   const shareProduct = (product) => {
-    const shareMessage = `Check out this product: ${product.name} \n ${API_URL}/product/${product.id}`;
+    const shareMessage = `Check out this product: ${product.name} \n ${REACT_APP_URL_WEBSITE}/product-details/${product.id}`;
     const mailtoLink = `mailto:?subject=Check out this product!&body=${encodeURIComponent(
       shareMessage
     )}`;
     window.open(mailtoLink, "_self");
   };
   return (
-    <Container className="py-5">
+    <Container className="py-5 overflow-hidden">
       <Row className=" mt-5 justify-content-center">
         <Col xs={10} md={7} lg={5} className="p-0 image-grid">
           {/* Big Image */}
@@ -181,6 +174,7 @@ const ProductDetails = ({cartItems}) => {
             {product.brand_name}
           </h6>
           <h1>{product.name}</h1>
+          <p>{product.product_type}</p>
           <br />
           <b className={`h4 mt-3 d-block ${theme ? "text-dark-primary" : "text-light-primary"}`}>
             {after_price && (
@@ -314,7 +308,7 @@ const ProductDetails = ({cartItems}) => {
         first_image= {`${API_URL}/${largeImage}`}
         addItem={addItem}
       />
-              <Button
+              {/* <Button
                 type="submit"
                 onClick={handleCheckout}
                 className={`${
@@ -326,7 +320,7 @@ const ProductDetails = ({cartItems}) => {
               >
                 <BsCartCheck size="1.7rem" />
                 Buy it now
-              </Button>
+              </Button> */}
             </div>
           ) : (
             <Button
@@ -336,14 +330,14 @@ const ProductDetails = ({cartItems}) => {
                   ? "bg-dark-primary text-black"
                   : "bg-light-primary text-light"
               } py-2 m-1`}
-              style={{ border: 0 }}
-            >
+              style={{ borderRadius:"20px",width:"45%" }}
+              >
               <BsCartPlus size="1.8rem" />
               Sold Out{" "}
             </Button>
           )}
-          <p className="mt-3 h6" style={{ opacity: "0.8", lineHeight: "2" }}>
-            {/* {product.description} */}
+          <p className="mt-3" style={{ opacity: "0.8", lineHeight: "2" }}>
+            {product.description}
           </p>
           <div className={`mt-5  ${theme ? "text-light" : "text-black"}`}>
             <span className="ms-1">

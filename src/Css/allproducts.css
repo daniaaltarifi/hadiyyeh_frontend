@@ -60,15 +60,11 @@
     text-decoration: line-through; /* Strikethrough original price */
   }
   
-  .rating {
+  /* .rating {
     margin-top: 5px;
-  }
+  } */
   
-  .rating span {
-    color: gold; /* Star color */
-    font-size: 1.2rem; /* Star size */
-  }
-  
+ 
   /* Position the button on top of the image, aligned to the top-left corner */
   .image-container {
     position: relative;

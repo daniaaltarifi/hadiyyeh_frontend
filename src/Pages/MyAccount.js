@@ -100,7 +100,7 @@ const handleVerifyCode = async (e) => {
 
 
   return (
-    <Container className="py-5">
+    <Container className="py-5 overflow-hidden">
       <Heading heading="My Account" />
       <Tab.Container defaultActiveKey="my-orders">
         <Row className="justify-content-evenly mt-4 p-1">
@@ -166,6 +166,7 @@ const handleVerifyCode = async (e) => {
       <OrderCard
         key={item.id} // Add a unique key for each item
         orderId={item.id}
+        created_at={order.created_at}
         title={item.product_name}
         img={`${API_URL}/${item.product_image}`}
         quantity={item.quantity}
@@ -175,16 +176,6 @@ const handleVerifyCode = async (e) => {
     ))}
   </div>
 ))}
-                {/* <>
-                <OrderCard
-                  orderDate="24 Jun, 2022"
-                  orderId="1334"
-                  title="Mens Casual Premium Slim Fit T-Shirts"
-                  img="https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg"
-                  deliveredDate="05 July, 2022"
-                />
-                </> */}
-
               </Tab.Pane>
               <Tab.Pane eventKey="account-details">
                 <Heading heading="Account details" size="h3" />
@@ -195,21 +186,6 @@ const handleVerifyCode = async (e) => {
             <p>Balance: {user.balance}</p>
             <Link onClick={handleLogout}>Log Out</Link>
         </div>
-
-                {/* {fetchUser ? (
-                  <div className="cont_acc_details">
-                    <p>
-                      {fetchUser.first_name} {fetchUser.last_name}
-                    </p>
-                    <p>{fetchUser.email}</p>
-                    <p>{fetchUser.balance}</p>
-                    <Link onClick={handleLogout}>Log Out</Link>
-                  </div>
-                ) : (
-                  <p>
-                    You are not logged in. Please log in to view your account.
-                  </p>
-                )} */}
               </Tab.Pane>
               <Tab.Pane eventKey="transfer-balance" >
          <TransferBalance/>
@@ -265,9 +241,11 @@ const handleVerifyCode = async (e) => {
                       <option value="">
                         {formData.country || "Select Country"}
                       </option>
-                      <option value="USA">USA</option>
-                      <option value="Canada">Canada</option>
-                      <option value="UK">UK</option>
+                      <option value="USA">Amman</option>
+                      <option value="Canada">Zarqa</option>
+                      <option value="UK">Madaba</option>
+                      <option value="UK">Jerash</option>
+                      <option value="UK">Aqaba</option>
                       {/* Add more country options as needed */}
                     </Form.Select>
                   </Form.Group>
