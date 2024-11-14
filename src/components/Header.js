@@ -44,7 +44,7 @@ const Header = ({ cartItems }) => {
   const { isEmpty, totalItems } = useCart();
   const [productType, setProductType] = useState("");
   
-  const numberofitemsincart = !user ? totalItems : cart.length;
+  // const numberofitemsincart = !user ? totalItems : cart.length;
   const handleSelection = (event) => {
     const newLang = event.target.value;
     setSelectedOption(newLang);
@@ -267,12 +267,9 @@ const Header = ({ cartItems }) => {
               } `}
             >
               <GrCart size="1.2rem" />
-              {/* {!isEmpty && ( */}
-              <span style={{ position: "relative" }}>
-                {/* {!user ? totalItems : cart.length} */}
+              {/* <span style={{ position: "relative" }}>
                 {numberofitemsincart}
-              </span>
-              {/* )} */}
+              </span> */}
             </Link>
           </Nav>
         </Container>
