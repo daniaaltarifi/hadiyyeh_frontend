@@ -62,7 +62,7 @@ fetchOrdeItems()
       if (response.data.Status === "Logout Success") {
         navigate(`/${lang}/sign-in`);
         localStorage.removeItem("account");
-        window.location.reload()
+        // window.location.reload()
       }
     } catch (error) {
       console.error("Logout error:", error);
